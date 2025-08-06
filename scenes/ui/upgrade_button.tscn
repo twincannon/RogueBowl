@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://xbgjfi7jj0et"]
+
+[ext_resource type="Script" uid="uid://c4lpgh7n2m828" path="res://scripts/ui/upgrade_button.gd" id="1_tii4b"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+script = ExtResource("1_tii4b")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Ball Size"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "10"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
