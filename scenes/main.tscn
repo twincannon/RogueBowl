@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cj3x40lddhc8i"]
+[gd_scene format=3 uid="uid://cj3x40lddhc8i"]
 
 [ext_resource type="Script" uid="uid://vv24md2o1t80" path="res://scripts/main.gd" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://dg2f7xwwelr8y" path="res://scripts/power_bar.gd" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://cc4csmm2nkshq" path="res://icon.svg" id="2_sugp2"]
+[ext_resource type="Script" uid="uid://i2xaq74kgncq" path="res://scripts/ball.gd" id="3_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://xbgjfi7jj0et" path="res://scenes/ui/upgrade_button.tscn" id="4_jyhfs"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sgp6g"]
@@ -36,73 +37,85 @@ albedo_texture = ExtResource("2_sugp2")
 [sub_resource type="SphereMesh" id="SphereMesh_o5qli"]
 material = SubResource("StandardMaterial3D_jyhfs")
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_f4vxy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
+albedo_texture = ExtResource("2_sugp2")
+
+[node name="Node3D" type="Node3D" unique_id=802985233]
 script = ExtResource("1_sugp2")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1028797784]
 transform = Transform3D(-4.10907e-08, 0.131547, -0.99131, -1.49079e-08, 0.99131, 0.131547, 1, 2.01837e-08, -3.87725e-08, -26.0622, 3.93333, 0.10726)
 current = true
 
-[node name="Alley" type="StaticBody3D" parent="."]
+[node name="Alley" type="StaticBody3D" parent="." unique_id=771148369]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Alley"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Alley" unique_id=1462448372]
 transform = Transform3D(32.7102, 0, 0, 0, 0.120397, 0, 0, 0, 5.16732, -8.81691, -0.0719677, 0)
 mesh = SubResource("BoxMesh_sgp6g")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Alley"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Alley" unique_id=1800773845]
 transform = Transform3D(32.7102, 0, 0, 0, 0.120397, 0, 0, 0, 5.16732, -8.81691, -0.0719677, 0)
 shape = SubResource("ConcavePolygonShape3D_sugp2")
 
-[node name="BackWall" type="StaticBody3D" parent="."]
+[node name="BackWall" type="StaticBody3D" parent="." unique_id=309278797]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.974, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall" unique_id=1758736280]
 transform = Transform3D(1.99928, 0, 0, 0, 8.3343, 0, 0, 0, 11.6503, 0, 0, 0)
 mesh = SubResource("BoxMesh_sugp2")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall" unique_id=883643274]
 transform = Transform3D(1.99928, 0, 0, 0, 8.3343, 0, 0, 0, 11.6503, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_sugp2")
 
-[node name="FloorBig" type="StaticBody3D" parent="."]
+[node name="FloorBig" type="StaticBody3D" parent="." unique_id=198299293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.109205, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FloorBig"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FloorBig" unique_id=1598792628]
 transform = Transform3D(207.466, 0, 0, 0, 0.120397, 0, 0, 0, 212.146, -8.81691, -0.0719677, 0)
 mesh = SubResource("BoxMesh_jyhfs")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorBig"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorBig" unique_id=1624940216]
 transform = Transform3D(207.466, 0, 0, 0, 0.120397, 0, 0, 0, 212.146, -8.81691, -0.0719677, 0)
 shape = SubResource("ConcavePolygonShape3D_sugp2")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2081065197]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.86394, 0)
 shadow_enabled = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=221745735]
 environment = SubResource("Environment_sgp6g")
 
-[node name="Ball" type="RigidBody3D" parent="."]
+[node name="Ball" type="RigidBody3D" parent="." unique_id=216638530]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.4802, 0.652723, 0)
 mass = 20.0
 freeze = true
 continuous_cd = true
+script = ExtResource("3_tbgi4")
 
-[node name="BallShape" type="CollisionShape3D" parent="Ball"]
+[node name="BallShape" type="CollisionShape3D" parent="Ball" unique_id=797197612]
 shape = SubResource("SphereShape3D_sgp6g")
 
-[node name="BallMesh" type="MeshInstance3D" parent="Ball"]
+[node name="BallMesh" type="MeshInstance3D" parent="Ball" unique_id=2123557210]
 mesh = SubResource("SphereMesh_o5qli")
 
-[node name="BowlingPinRoot" type="Node3D" parent="."]
+[node name="Arrow" type="MeshInstance3D" parent="Ball" unique_id=1711341772]
+transform = Transform3D(2.7428992e-09, 1, 0, 0.06275022, -4.371139e-08, 0, 0, 0, -0.06275022, 1.332943, 0, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_f4vxy")
+surface_material_override/0 = SubResource("StandardMaterial3D_tbgi4")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="BowlingPinRoot" type="Node3D" parent="." unique_id=1975115711]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1652745976]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1167624158]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -110,7 +123,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1046913463]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -124,14 +137,14 @@ offset_bottom = -37.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer" unique_id=1393909275]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer" unique_id=420565878]
 layout_mode = 2
 text = "Power"
 
-[node name="PowerBar" type="ProgressBar" parent="CanvasLayer/Control/PanelContainer/VBoxContainer"]
+[node name="PowerBar" type="ProgressBar" parent="CanvasLayer/Control/PanelContainer/VBoxContainer" unique_id=673653980]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -142,7 +155,7 @@ fill_mode = 3
 show_percentage = false
 script = ExtResource("2_0wfyh")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=787157587]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -154,44 +167,55 @@ offset_top = -79.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=530066445]
 layout_mode = 2
 text = "Angle (50% = center)"
 horizontal_alignment = 1
 
-[node name="AngleBar" type="ProgressBar" parent="CanvasLayer/Control/VBoxContainer"]
+[node name="AngleBar" type="ProgressBar" parent="CanvasLayer/Control/VBoxContainer" unique_id=1703660816]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = -10.0
-max_value = 10.0
+min_value = -20.0
+max_value = 20.0
 
-[node name="UpgradeContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+[node name="Label2" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=2139171652]
+layout_mode = 2
+text = "Spin (50% = no spin)"
+horizontal_alignment = 1
+
+[node name="SpinBar" type="ProgressBar" parent="CanvasLayer/Control/VBoxContainer" unique_id=838024040]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+
+[node name="UpgradeContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=944079471]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 108.0
 offset_right = 157.0
 offset_bottom = 468.0
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/UpgradeContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=1579360550]
 layout_mode = 2
 text = "Upgrade - Pin Cost"
 
-[node name="HBoxContainer" parent="CanvasLayer/Control/UpgradeContainer" instance=ExtResource("4_jyhfs")]
+[node name="HBoxContainer" parent="CanvasLayer/Control/UpgradeContainer" unique_id=2063140350 instance=ExtResource("4_jyhfs")]
 layout_mode = 2
 button_text = "Ball Size"
 cost = 10
 
-[node name="HBoxContainer2" parent="CanvasLayer/Control/UpgradeContainer" instance=ExtResource("4_jyhfs")]
+[node name="HBoxContainer2" parent="CanvasLayer/Control/UpgradeContainer" unique_id=1968492527 instance=ExtResource("4_jyhfs")]
 layout_mode = 2
 button_text = "Ball Speed"
 cost = 5
 
-[node name="HBoxContainer3" parent="CanvasLayer/Control/UpgradeContainer" instance=ExtResource("4_jyhfs")]
+[node name="HBoxContainer3" parent="CanvasLayer/Control/UpgradeContainer" unique_id=2045938470 instance=ExtResource("4_jyhfs")]
 layout_mode = 2
 button_text = "Pin Count"
 cost = 30
 
-[node name="Label" type="Label" parent="CanvasLayer/Control"]
+[node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=1027351973]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -203,16 +227,17 @@ offset_bottom = 97.0
 grow_horizontal = 0
 text = "A/D to adjust position
 Q/E to adjust angle
+Z/C to adjust spin
 Spacebar to launch"
 
-[node name="Button" type="Button" parent="CanvasLayer"]
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=1147933242]
 offset_left = 27.0
 offset_top = 23.0
 offset_right = 100.0
 offset_bottom = 73.0
 text = "Reset"
 
-[node name="PinsLabel" type="Label" parent="CanvasLayer"]
+[node name="PinsLabel" type="Label" parent="CanvasLayer" unique_id=379954495]
 unique_name_in_owner = true
 offset_left = 135.0
 offset_top = 27.0

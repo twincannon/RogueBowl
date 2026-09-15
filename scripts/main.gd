@@ -2,7 +2,6 @@ extends Node3D
 
 var bowling_pin_scene = preload("res://scenes/bowling_pin.tscn")
 var pins:Array[BowlingPin]
-var launched := false
 
 func _ready() -> void:
 	
@@ -50,13 +49,13 @@ func generate_bowling_pin_positions(pin_spacing: float) -> Array[Vector2]:
 	return positions
 
 func _process(delta: float) -> void:
-	if launched:
+	if %Ball.launched:
 		$Camera3D.fov = lerpf($Camera3D.fov, 20.0, 2.0 * delta)
 	
 	%PinsLabel.text = "Pins: " + str(SaveGame.pins)
 
 func _physics_process(delta: float) -> void:
-	if !launched:
+	if !%Ball.launched:
 		if Input.is_action_pressed("move_left"):
 			var t = %Ball.get_transform()
 			t.origin.z -= 1 * delta
@@ -66,31 +65,40 @@ func _physics_process(delta: float) -> void:
 			t.origin.z += 1 * delta
 			%Ball.set_transform(t)
 		
+	if Input.is_action_pressed("spin_left"):
+		%SpinBar.value -= 20 * delta
+	if Input.is_action_pressed("spin_right"):
+		%SpinBar.value += 20 * delta
+		
 	if Input.is_action_pressed("angle_left"):
-		%AngleBar.value -= 10 * delta
+		%AngleBar.value -= 20 * delta
 	if Input.is_action_pressed("angle_right"):
-		%AngleBar.value += 10 * delta
+		%AngleBar.value += 20 * delta
+		
+	%Ball.rotation_degrees.y = -%AngleBar.value
 		
 	if Global.has_object_stopped_moving(%Ball):
 		%Ball.set_freeze_enabled(true)
 	
 	var any_pin_moving = false
-	if launched:
+	if %Ball.launched:
 		for pin in pins:
 			if pin.is_pin_moving():
 				any_pin_moving = true
 				break
-	if launched and !any_pin_moving and %Ball.is_freeze_enabled():
+	if %Ball.launched and !any_pin_moving and %Ball.is_freeze_enabled():
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _input(event):
 	if event.is_action_pressed("launch"):
-		launched = true
-		%Ball.set_freeze_enabled(false)
-		%Ball.set_axis_velocity(Vector3(%PowerBar.value * SaveGame.ball_vel_scale, 0.0, 0.0))
-		%Ball.angular_velocity.x = %AngleBar.value
+		%Ball.launch(%PowerBar.value, %SpinBar.value)
+
 		%PowerBar.paused = true
 		get_tree().create_timer(10.0).timeout.connect(on_ball_timeout.bind())
+		
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("cheat_addpins"):
+		SaveGame.pins += 1000
 
 func on_ball_timeout():
 	%Ball.set_freeze_enabled(true)
