@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://qxo56ivmnc0w"]
+
+[ext_resource type="Script" uid="uid://i2xaq74kgncq" path="res://scripts/ball.gd" id="1_cxlvu"]
+[ext_resource type="Texture2D" uid="uid://cc4csmm2nkshq" path="res://icon.svg" id="2_f7cbr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_sgp6g"]
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_texture = ExtResource("2_f7cbr")
+
+[sub_resource type="SphereMesh" id="SphereMesh_o5qli"]
+material = SubResource("StandardMaterial3D_jyhfs")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f4vxy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
+albedo_texture = ExtResource("2_f7cbr")
+
+[node name="Ball" type="RigidBody3D" unique_id=1332799669]
+mass = 7.26
+freeze = true
+continuous_cd = true
+script = ExtResource("1_cxlvu")
+
+[node name="BallShape" type="CollisionShape3D" parent="." unique_id=207720447]
+shape = SubResource("SphereShape3D_sgp6g")
+
+[node name="BallMesh" type="MeshInstance3D" parent="." unique_id=452910247]
+mesh = SubResource("SphereMesh_o5qli")
+
+[node name="Arrow" type="MeshInstance3D" parent="." unique_id=1612303594]
+transform = Transform3D(1.3113416e-09, 1, -2.6226832e-09, 0.03, -4.371139e-08, 0, -1.1464113e-16, -8.742278e-08, -0.03, 1.0677242, -0.027055398, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_f4vxy")
+surface_material_override/0 = SubResource("StandardMaterial3D_tbgi4")

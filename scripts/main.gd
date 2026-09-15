@@ -8,12 +8,13 @@ func _ready() -> void:
 	%Ball/BallShape.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
 	%Ball/BallMesh.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
 	
-	var positions = generate_bowling_pin_positions(1.5)
+	var positions = generate_bowling_pin_positions(0.3048)
 	for pos in positions:
 		var new_pin = bowling_pin_scene.instantiate()
 		$BowlingPinRoot.add_child(new_pin)
-		new_pin.global_position.x = pos.x
-		new_pin.global_position.z = pos.y
+		new_pin.global_position.x = $BowlingPinRoot.position.x + pos.x
+		new_pin.global_position.z = $BowlingPinRoot.position.z + pos.y
+		new_pin.global_position.y = $BowlingPinRoot.position.y
 		pins.append(new_pin)
 
 	#var row = 0
@@ -50,7 +51,7 @@ func generate_bowling_pin_positions(pin_spacing: float) -> Array[Vector2]:
 
 func _process(delta: float) -> void:
 	if %Ball.launched:
-		$Camera3D.fov = lerpf($Camera3D.fov, 20.0, 2.0 * delta)
+		$Camera3D.fov = lerpf($Camera3D.fov, 10.0, 2.0 * delta)
 	
 	%PinsLabel.text = "Pins: " + str(SaveGame.pins)
 
@@ -90,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _input(event):
-	if event.is_action_pressed("launch"):
+	if event.is_action_pressed("launch") and not %Ball.launched:
 		%Ball.launch(%PowerBar.value, %SpinBar.value)
 
 		%PowerBar.paused = true

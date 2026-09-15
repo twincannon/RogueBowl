@@ -1,6 +1,6 @@
 extends ProgressBar
 
-var speed := 50.0  # how fast it fills/unfills (percentage per second)
+var speed := 25.0  # how fast it fills/unfills (percentage per second)
 var direction := 1  # 1 = increasing, -1 = decreasing
 var paused := false
 

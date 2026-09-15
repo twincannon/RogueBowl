@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://07mgft05yrlj"]
+
+[ext_resource type="PackedScene" uid="uid://bjptcypdpreip" path="res://assets/alley.gltf" id="1_knqwg"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_o6xl0"]
+friction = 0.3
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_174d2"]
+points = PackedVector3Array(-9.145, -0.05, -0.53, -9.145, 0.05, -0.53, 9.145, -0.05, -0.53, -9.145, -0.05, 0.53, -9.145, 0.05, 0.53, 9.145, 0.05, -0.53, 9.145, -0.05, 0.53, 9.145, 0.05, 0.53)
+
+[node name="Alley" type="StaticBody3D" unique_id=162583633]
+physics_material_override = SubResource("PhysicsMaterial_o6xl0")
+
+[node name="alley" parent="." unique_id=868666289 instance=ExtResource("1_knqwg")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=946387706]
+shape = SubResource("ConvexPolygonShape3D_174d2")
+
+[editable path="alley"]

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dfvu1yuy6icnp"
-path="res://.godot/imported/BowlingPin.gltf-1391d14c1ecb724f35ad771999f37294.scn"
+uid="uid://bjptcypdpreip"
+path="res://.godot/imported/alley.gltf-44e4603aa284d2747853fe78df4ecd9a.scn"
 
 [deps]
 
-source_file="res://assets/BowlingPin.gltf"
-dest_files=["res://.godot/imported/BowlingPin.gltf-1391d14c1ecb724f35ad771999f37294.scn"]
+source_file="res://assets/alley.gltf"
+dest_files=["res://.godot/imported/alley.gltf-44e4603aa284d2747853fe78df4ecd9a.scn"]
 
 [params]
 
@@ -39,24 +39,7 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={
-"meshes": {
-"BowlingPin_BezierCurve_001": {
-"generate/lightmap_uv": 0,
-"generate/lods": 0,
-"generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/BowlingPin.res",
-"save_to_file/path": "uid://c7tbfhw3j3pf0"
-}
-},
-"nodes": {
-"PATH:pinStripe": {
-"generate/physics": true
-}
-}
-}
-gltf/naming_version=1
+_subresources={}
+gltf/naming_version=2
 gltf/embedded_image_handling=1
-gltf/texture_map_mode=0
+gltf/texture_map_mode=1
