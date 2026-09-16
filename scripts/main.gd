@@ -4,10 +4,19 @@ var bowling_pin_scene = preload("res://scenes/bowling_pin.tscn")
 var pins:Array[BowlingPin]
 
 func _ready() -> void:
-	
+
 	%Ball/BallShape.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
 	%Ball/BallMesh.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
-	
+
+	# %Ball's authored y position rests a base_radius=0.1 sphere exactly on the
+	# lane at ball_scale 1.0. Keep it resting on the lane (instead of getting
+	# pushed into the floor and popping back out) as the ball grows.
+	const BASE_BALL_RADIUS := 0.1
+	const BASE_BALL_MASS := 7.26
+	var lane_y:float = %Ball.position.y - BASE_BALL_RADIUS
+	%Ball.position.y = lane_y + BASE_BALL_RADIUS * SaveGame.ball_scale
+	%Ball.set_mass(BASE_BALL_MASS * pow(SaveGame.ball_scale, 3.0))
+
 	var positions = generate_bowling_pin_positions(0.3048)
 	for pos in positions:
 		var new_pin = bowling_pin_scene.instantiate()
