@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/fireworks_pin.gd" id="1_fw"]
+[ext_resource type="ArrayMesh" uid="uid://c7tbfhw3j3pf0" path="res://assets/BowlingPin.res" id="2_fw"]
+[ext_resource type="Shape3D" path="res://resources/pin_shapes/pin_collision_shape.tres" id="3_fw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fw"]
+albedo_color = Color(1, 0.82, 0.15, 1)
+emission_enabled = true
+emission = Color(1, 0.7, 0.1, 1)
+emission_energy_multiplier = 0.5
+
+[node name="FireworksPin" type="RigidBody3D"]
+mass = 1.54
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_fw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.15, 0, 0, 0, 1.15, 0, 0, 0, 1.15, 0, 0, 0)
+mesh = ExtResource("2_fw")
+surface_material_override/0 = SubResource("StandardMaterial3D_fw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.15, 0, 0, 0, 1.15, 0, 0, 0, 1.15, 0, 0, 0)
+shape = ExtResource("3_fw")

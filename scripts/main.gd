@@ -1,6 +1,8 @@
 extends Node3D
 
 var bowling_pin_scene = preload("res://scenes/bowling_pin.tscn")
+var tnt_pin_scene = preload("res://scenes/tnt_pin.tscn")
+var fireworks_pin_scene = preload("res://scenes/fireworks_pin.tscn")
 var pins:Array[BowlingPin]
 
 func _ready() -> void:
@@ -23,12 +25,20 @@ func _ready() -> void:
 
 	var positions = generate_bowling_pin_positions(0.3048)
 	for pos in positions:
-		var new_pin = bowling_pin_scene.instantiate()
+		var new_pin = _instantiate_pin()
 		$BowlingPinRoot.add_child(new_pin)
 		new_pin.global_position.x = $BowlingPinRoot.position.x + pos.x
 		new_pin.global_position.z = $BowlingPinRoot.position.z + pos.y
 		new_pin.global_position.y = $BowlingPinRoot.position.y
 		pins.append(new_pin)
+
+func _instantiate_pin() -> BowlingPin:
+	var roll := randf()
+	if roll < SaveGame.tnt_pin_chance:
+		return tnt_pin_scene.instantiate() as BowlingPin
+	elif roll < SaveGame.tnt_pin_chance + SaveGame.firework_pin_chance:
+		return fireworks_pin_scene.instantiate() as BowlingPin
+	return bowling_pin_scene.instantiate() as BowlingPin
 
 func generate_bowling_pin_positions(pin_spacing: float) -> Array[Vector2]:
 	var positions:Array[Vector2] = []
@@ -83,7 +93,8 @@ func _physics_process(delta: float) -> void:
 	var any_pin_moving = false
 	if %Ball.launched:
 		for pin in pins:
-			if pin.is_pin_moving():
+			# A fireworks pin queue_free()s itself shortly after bursting.
+			if is_instance_valid(pin) and pin.is_pin_moving():
 				any_pin_moving = true
 				break
 	if %Ball.launched and !any_pin_moving and %Ball.is_freeze_enabled():

@@ -17,3 +17,7 @@ var selected_ball_type_index := 0
 
 func get_selected_ball_type() -> BallType:
 	return BALL_TYPES[selected_ball_type_index]
+
+# Pin types
+var tnt_pin_chance := 0.1
+var firework_pin_chance := 0.1
