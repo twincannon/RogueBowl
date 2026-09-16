@@ -36,6 +36,7 @@ func _burst() -> void:
 	var fx := burst_scene.instantiate() as GPUParticles3D
 	get_tree().current_scene.add_child(fx)
 	fx.global_position = global_position
+	fx.emitting = true  # don't rely on the scene's saved default
 	get_tree().create_timer(fx.lifetime + 0.2).timeout.connect(fx.queue_free)
 
 	visible = false

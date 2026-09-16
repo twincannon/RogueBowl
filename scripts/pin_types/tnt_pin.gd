@@ -5,6 +5,9 @@ class_name TntPin
 @export var blast_impulse_strength: float = 6.0
 @export var self_launch_impulse: float = 3.0
 @export var explosion_scene: PackedScene = preload("res://scenes/effects/explosion_burst.tscn")
+@export var cleanup_delay: float = 2.0
+
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 var _ignited := false
 
@@ -18,6 +21,10 @@ func ignite() -> void:
 
 	apply_central_impulse(Vector3.UP * self_launch_impulse * mass)
 	_spawn_explosion_vfx()
+	
+	visible = false
+	collision_shape.set_deferred("disabled", true)
+	set_freeze_enabled(true)
 
 	for node in get_tree().get_nodes_in_group("pins"):
 		if node == self or not (node is BowlingPin):
@@ -33,8 +40,14 @@ func ignite() -> void:
 		if other.has_method("ignite"):
 			other.ignite()  # chain reaction - safe, ignite() is idempotent
 
+	get_tree().create_timer(cleanup_delay).timeout.connect(_cleanup)
+
 func _spawn_explosion_vfx() -> void:
 	var fx := explosion_scene.instantiate() as GPUParticles3D
 	get_tree().current_scene.add_child(fx)
 	fx.global_position = global_position
+	fx.emitting = true  # don't rely on the scene's saved default - it's been toggled off before
 	get_tree().create_timer(fx.lifetime + 0.2).timeout.connect(fx.queue_free)
+
+func _cleanup() -> void:
+	queue_free()
