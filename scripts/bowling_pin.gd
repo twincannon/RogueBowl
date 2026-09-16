@@ -4,6 +4,9 @@ class_name BowlingPin
 var pin_is_fallen := false
 
 
+func _ready() -> void:
+	add_to_group("pins")
+
 func _physics_process(delta: float) -> void:
 	if !pin_is_fallen and _is_pin_fallen():
 		pin_is_fallen = true

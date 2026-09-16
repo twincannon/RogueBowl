@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BallType" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ball_types/ball_type.gd" id="1_default"]
+
+[resource]
+script = ExtResource("1_default")
+display_name = "Default"
+mass_multiplier = 1.0
+scale_multiplier = 1.0
+velocity_multiplier = 1.0
+spin_grip_multiplier = 1.0
+visual_spin_multiplier = 1.0

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BlackHoleBallType" format=3 uid="uid://bol3aof8s42uq"]
+
+[ext_resource type="Script" uid="uid://cbxjhctah0muc" path="res://scripts/ball_types/black_hole_ball_type.gd" id="1_blackhole"]
+
+[resource]
+script = ExtResource("1_blackhole")
+pull_radius = 1.5
+pull_strength = 25.0
+display_name = "Black Hole"
+mass_multiplier = 1.5

@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://07mgft05yrlj" path="res://scenes/alley.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://xbgjfi7jj0et" path="res://scenes/ui/upgrade_button.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://qxo56ivmnc0w" path="res://scenes/ball.tscn" id="4_tefeu"]
+[ext_resource type="Script" uid="uid://cwi3ypyu76n32" path="res://scripts/ui/ball_type_option.gd" id="5_balltype"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
 
@@ -162,6 +163,15 @@ offset_left = 16.0
 offset_top = 108.0
 offset_right = 157.0
 offset_bottom = 468.0
+
+[node name="BallTypeLabel" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551001]
+layout_mode = 2
+text = "Ball Type"
+
+[node name="BallTypeOption" type="OptionButton" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551002]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("5_balltype")
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=1579360550]
 layout_mode = 2

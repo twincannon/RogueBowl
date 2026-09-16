@@ -5,17 +5,21 @@ var pins:Array[BowlingPin]
 
 func _ready() -> void:
 
-	%Ball/BallShape.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
-	%Ball/BallMesh.scale = Vector3(SaveGame.ball_scale,SaveGame.ball_scale,SaveGame.ball_scale)
+	%Ball.ball_type = SaveGame.get_selected_ball_type()
+	var bt = %Ball.ball_type
+
+	var combined_scale:float = SaveGame.ball_scale * bt.scale_multiplier
+	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
+	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
 
 	# %Ball's authored y position rests a base_radius=0.1 sphere exactly on the
-	# lane at ball_scale 1.0. Keep it resting on the lane (instead of getting
+	# lane at scale 1.0. Keep it resting on the lane (instead of getting
 	# pushed into the floor and popping back out) as the ball grows.
 	const BASE_BALL_RADIUS := 0.1
 	const BASE_BALL_MASS := 7.26
 	var lane_y:float = %Ball.position.y - BASE_BALL_RADIUS
-	%Ball.position.y = lane_y + BASE_BALL_RADIUS * SaveGame.ball_scale
-	%Ball.set_mass(BASE_BALL_MASS * pow(SaveGame.ball_scale, 3.0))
+	%Ball.position.y = lane_y + BASE_BALL_RADIUS * combined_scale
+	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
 
 	var positions = generate_bowling_pin_positions(0.3048)
 	for pos in positions:
@@ -25,21 +29,6 @@ func _ready() -> void:
 		new_pin.global_position.z = $BowlingPinRoot.position.z + pos.y
 		new_pin.global_position.y = $BowlingPinRoot.position.y
 		pins.append(new_pin)
-
-	#var row = 0
-	#for i in range(0, 10):
-		#if i == 1 or i == 3 or i == 6:
-			#row += 1
-		#var new_pin = bowling_pin_scene.instantiate()
-		#$BowlingPinRoot.add_child(new_pin)
-		#new_pin.position.x = row * 1
-		#if row <= 1:
-			#new_pin.position.z = i * 0.75 - row * 1.1
-		#elif row == 2:
-			#new_pin.position.z = i * 0.75 - row * (1.1 + 1.1 - 0.75)
-		#else:
-			#new_pin.position.z = i * 0.75 - row * (1.1 + 1.1 + 0.55 - 0.75)
-		#pass
 
 func generate_bowling_pin_positions(pin_spacing: float) -> Array[Vector2]:
 	var positions:Array[Vector2] = []
@@ -61,6 +50,7 @@ func generate_bowling_pin_positions(pin_spacing: float) -> Array[Vector2]:
 func _process(delta: float) -> void:
 	if %Ball.launched:
 		$Camera3D.fov = lerpf($Camera3D.fov, 10.0, 2.0 * delta)
+		$Camera3D.position.y = lerpf($Camera3D.position.y, 1.5, 2.0 * delta)
 	
 	%PinsLabel.text = "Pins: " + str(SaveGame.pins)
 
