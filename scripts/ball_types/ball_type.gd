@@ -5,7 +5,7 @@ class_name BallType
 ## Also directly usable as the "Default" ball - no subclass needed for it.
 ##
 ## NOTE: instances of this class (and its subclasses) are shared singletons
-## (see SaveGame.BALL_TYPES), not duplicated per throw. Subclasses that keep
+## (see SaveGame.BALL_TYPE_RESOURCES), not duplicated per throw. Subclasses that keep
 ## per-throw mutable state (e.g. a trail timer) must reset it in on_launch().
 ## This is only safe because exactly one Ball is ever in flight at a time -
 ## revisit if the game ever supports concurrent balls.

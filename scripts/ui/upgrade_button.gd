@@ -10,12 +10,20 @@ func _ready():
 
 
 func _on_button_pressed() -> void:
+	var is_ball_upgrade:bool = $Button.text == "Ball Size" or $Button.text == "Ball Speed"
+	if is_ball_upgrade and SaveGame.selected_hand_index == -1:
+		return  # nothing selected to upgrade
+
 	if SaveGame.pins >= cost:
 		SaveGame.pins -= cost
 		match $Button.text:
 			"Ball Size":
-				SaveGame.ball_scale += 0.25
+				SaveGame.hand[SaveGame.selected_hand_index].ball_scale += 0.25
 			"Ball Speed":
-				SaveGame.ball_vel_scale += 0.25
+				SaveGame.hand[SaveGame.selected_hand_index].ball_vel_scale += 0.25
 			"Pin Count":
 				SaveGame.pin_rows += 1
+
+		if is_ball_upgrade:
+			# Respawn the selected ball so the new stat is visible immediately.
+			SaveGame.select_ball(SaveGame.selected_hand_index)

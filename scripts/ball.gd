@@ -6,6 +6,7 @@ extends RigidBody3D
 @export var spin_grip_factor: float = 0.5  # lateral curve accel (m/s^2 per unit of spin), independent of ball speed
 @export var visual_spin_scale: float = 0.5  # cosmetic english on top of the real rolling spin
 @export var ball_type: BallType = preload("res://resources/ball_types/default.tres")
+@export var vel_scale_multiplier: float = 1.0
 
 var launched := false
 var spin_input := 0.0
@@ -32,7 +33,7 @@ func launch(power:float, spin:float):
 	set_freeze_enabled(false)
 	ball_type.on_launch(self)
 
-	var speed = power * SaveGame.ball_vel_scale * ball_type.velocity_multiplier
+	var speed = power * vel_scale_multiplier * ball_type.velocity_multiplier
 	var local_vel = Vector3(speed, 0.0, 0.0)
 	var world_vel:Vector3 = global_transform.basis * local_vel
 	set_axis_velocity(world_vel)

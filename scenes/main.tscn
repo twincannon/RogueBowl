@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://07mgft05yrlj" path="res://scenes/alley.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://xbgjfi7jj0et" path="res://scenes/ui/upgrade_button.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://qxo56ivmnc0w" path="res://scenes/ball.tscn" id="4_tefeu"]
-[ext_resource type="Script" uid="uid://cwi3ypyu76n32" path="res://scripts/ui/ball_type_option.gd" id="5_balltype"]
+[ext_resource type="Script" path="res://scripts/ui/ball_slot_button.gd" id="5_ballslot"]
+[ext_resource type="PackedScene" path="res://scenes/ui/add_ball_button.tscn" id="6_addball"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
 
@@ -164,14 +165,27 @@ offset_top = 108.0
 offset_right = 157.0
 offset_bottom = 468.0
 
-[node name="BallTypeLabel" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551001]
+[node name="BallReturnLabel" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551001]
 layout_mode = 2
-text = "Ball Type"
+text = "Ball Return"
 
-[node name="BallTypeOption" type="OptionButton" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551002]
+[node name="BallSlot0" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551002]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("5_balltype")
+script = ExtResource("5_ballslot")
+slot_index = 0
+
+[node name="BallSlot1" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551003]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("5_ballslot")
+slot_index = 1
+
+[node name="BallSlot2" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551004]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("5_ballslot")
+slot_index = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=1579360550]
 layout_mode = 2
@@ -191,6 +205,20 @@ cost = 5
 layout_mode = 2
 button_text = "Pin Count"
 cost = 30
+
+[node name="AddBallLabel" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551005]
+layout_mode = 2
+text = "Add Ball - Pin Cost"
+
+[node name="AddFireball" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551006 instance=ExtResource("6_addball")]
+layout_mode = 2
+ball_type_id = 1
+cost = 15
+
+[node name="AddBlackHole" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551007 instance=ExtResource("6_addball")]
+layout_mode = 2
+ball_type_id = 2
+cost = 20
 
 [node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=1027351973]
 layout_mode = 1

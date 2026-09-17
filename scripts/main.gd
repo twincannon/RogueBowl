@@ -5,23 +5,23 @@ var tnt_pin_scene = preload("res://scenes/tnt_pin.tscn")
 var fireworks_pin_scene = preload("res://scenes/fireworks_pin.tscn")
 var pins:Array[BowlingPin]
 
+const BASE_BALL_RADIUS := 0.1
+const BASE_BALL_MASS := 7.26
+
+var base_lane_y := 0.0  # %Ball's authored y position, captured before any selection scales it
+
 func _ready() -> void:
 
-	%Ball.ball_type = SaveGame.get_selected_ball_type()
-	var bt = %Ball.ball_type
+	base_lane_y = %Ball.position.y - BASE_BALL_RADIUS
 
-	var combined_scale:float = SaveGame.ball_scale * bt.scale_multiplier
-	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
-
-	# %Ball's authored y position rests a base_radius=0.1 sphere exactly on the
-	# lane at scale 1.0. Keep it resting on the lane (instead of getting
-	# pushed into the floor and popping back out) as the ball grows.
-	const BASE_BALL_RADIUS := 0.1
-	const BASE_BALL_MASS := 7.26
-	var lane_y:float = %Ball.position.y - BASE_BALL_RADIUS
-	%Ball.position.y = lane_y + BASE_BALL_RADIUS * combined_scale
-	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
+	# No ball is in the lane until the player picks one up from the ball
+	# return - reset any stale selection from a previous scene instance.
+	# Connect before resetting (not just setting the var directly) so the
+	# slot buttons - already connected from their own earlier _ready(),
+	# since children ready before their parent - actually hear about it and
+	# re-enable themselves instead of staying stuck disabled.
+	SaveGame.ball_selected.connect(_on_ball_selected)
+	SaveGame.select_ball(-1)
 
 	var positions = generate_bowling_pin_positions(0.3048)
 	for pos in positions:
@@ -31,6 +31,29 @@ func _ready() -> void:
 		new_pin.global_position.z = $BowlingPinRoot.position.z + pos.y
 		new_pin.global_position.y = $BowlingPinRoot.position.y
 		pins.append(new_pin)
+
+func _on_ball_selected(hand_index: int) -> void:
+	if %Ball.launched:
+		return
+
+	if hand_index < 0:
+		%Ball.visible = false
+		return
+
+	# Swap whichever ball was previously spawned for the newly picked one -
+	# re-selecting a different ball before throwing is allowed.
+	var selected_ball: PlayerBall = SaveGame.hand[hand_index]
+	%Ball.ball_type = selected_ball.ball_type
+	%Ball.vel_scale_multiplier = selected_ball.ball_vel_scale
+	var bt := selected_ball.ball_type
+
+	var combined_scale:float = selected_ball.ball_scale * bt.scale_multiplier
+	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
+	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
+	%Ball.position.y = base_lane_y + BASE_BALL_RADIUS * combined_scale
+	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
+
+	%Ball.visible = true
 
 func _instantiate_pin() -> BowlingPin:
 	var roll := randf()
@@ -101,8 +124,9 @@ func _physics_process(delta: float) -> void:
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _input(event):
-	if event.is_action_pressed("launch") and not %Ball.launched:
+	if event.is_action_pressed("launch") and not %Ball.launched and SaveGame.selected_hand_index != -1:
 		%Ball.launch(%PowerBar.value, %SpinBar.value)
+		SaveGame.throw_ball(SaveGame.selected_hand_index)
 
 		%PowerBar.paused = true
 		get_tree().create_timer(10.0).timeout.connect(on_ball_timeout.bind())
