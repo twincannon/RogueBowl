@@ -43,11 +43,10 @@ func ignite() -> void:
 	get_tree().create_timer(cleanup_delay).timeout.connect(_cleanup)
 
 func _spawn_explosion_vfx() -> void:
-	var fx := explosion_scene.instantiate() as GPUParticles3D
+	var fx = explosion_scene.instantiate()
 	get_tree().current_scene.add_child(fx)
 	fx.global_position = global_position
-	fx.emitting = true  # don't rely on the scene's saved default - it's been toggled off before
-	get_tree().create_timer(fx.lifetime + 0.2).timeout.connect(fx.queue_free)
+	get_tree().create_timer(2.5).timeout.connect(fx.queue_free)
 
 func _cleanup() -> void:
 	queue_free()
