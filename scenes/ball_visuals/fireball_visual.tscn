@@ -1,50 +1,62 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://cg2ej64yd83fi"]
+
+[ext_resource type="Texture2D" uid="uid://dtcu46ubdxpmo" path="res://assets/sprites/particle_fire.png" id="1_68rs7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fbmesh"]
 shading_mode = 0
 albedo_color = Color(1, 0.35, 0.05, 1)
-emission_enabled = true
-emission = Color(1, 0.3, 0.05, 1)
-emission_energy_multiplier = 2.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_fbmesh"]
 material = SubResource("StandardMaterial3D_fbmesh")
 radius = 0.1
 height = 0.2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fbparticle"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 0.5, 0.1, 1)
-emission_enabled = true
-emission = Color(1, 0.4, 0.05, 1)
-emission_energy_multiplier = 3.0
-billboard_mode = 1
+[sub_resource type="Curve" id="Curve_3b4wq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.71647507, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
-[sub_resource type="QuadMesh" id="QuadMesh_fbparticle"]
-material = SubResource("StandardMaterial3D_fbparticle")
-size = Vector2(0.025, 0.025)
+[sub_resource type="CurveTexture" id="CurveTexture_vw7wy"]
+curve = SubResource("Curve_3b4wq")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fb"]
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = -366.0
+angle_max = 377.50003
 direction = Vector3(0, 1, 0)
 spread = 30.0
 initial_velocity_min = 0.05
 initial_velocity_max = 0.15
 gravity = Vector3(0, 0.15, 0)
-scale_min = 0.5
-scale_max = 1.0
+scale_min = 0.32999998
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_vw7wy")
 color = Color(1, 0.5, 0.1, 1)
-emission_shape = 1
-emission_sphere_radius = 0.1
 
-[node name="FireballVisual" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fbparticle"]
+transparency = 1
+albedo_color = Color(1, 0.5, 0.1, 1)
+albedo_texture = ExtResource("1_68rs7")
+emission_enabled = true
+emission = Color(1, 0.4, 0.05, 1)
+emission_energy_multiplier = 3.0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[sub_resource type="QuadMesh" id="QuadMesh_fbparticle"]
+material = SubResource("StandardMaterial3D_fbparticle")
+size = Vector2(0.025, 0.025)
+
+[node name="FireballVisual" type="Node3D" unique_id=556462976]
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=539149519]
 mesh = SubResource("SphereMesh_fbmesh")
 
-[node name="Embers" type="GPUParticles3D" parent="."]
-amount = 20
+[node name="Embers" type="GPUParticles3D" parent="." unique_id=358742105]
+amount = 100
 lifetime = 0.8
-emitting = true
 process_material = SubResource("ParticleProcessMaterial_fb")
 draw_pass_1 = SubResource("QuadMesh_fbparticle")

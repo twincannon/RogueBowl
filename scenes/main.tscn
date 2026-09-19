@@ -230,13 +230,23 @@ Q/E to adjust angle
 Z/C to adjust spin
 Spacebar to launch"
 
-[node name="Button" type="Button" parent="CanvasLayer" unique_id=1147933242]
+[node name="SkipButton" type="Button" parent="CanvasLayer" unique_id=1147933242]
 unique_name_in_owner = true
+visible = false
 offset_left = 27.0
 offset_top = 23.0
 offset_right = 100.0
 offset_bottom = 73.0
 text = "Skip"
+
+[node name="NewGameButton" type="Button" parent="CanvasLayer" unique_id=2044605842]
+unique_name_in_owner = true
+visible = false
+offset_left = 27.0
+offset_top = 23.0
+offset_right = 100.0
+offset_bottom = 73.0
+text = "New Game"
 
 [node name="PinsLabel" type="Label" parent="CanvasLayer" unique_id=379954495]
 unique_name_in_owner = true
@@ -272,4 +282,5 @@ offset_bottom = 100.0
 text = "Game Over. Score: 0 / 150"
 
 [connection signal="pressed" from="CanvasLayer/Control/UpgradeContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkipButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/NewGameButton" to="." method="_on_new_game_button_pressed"]

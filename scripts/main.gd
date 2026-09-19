@@ -18,7 +18,7 @@ func _ready() -> void:
 	
 	SaveGame.ball_upgraded.connect(on_ball_upgraded)
 	
-	set_camera($BallReturnCamera, true)
+	set_camera($BallReturnCamera, false)
 	
 	# Show balls in ball return (players hand)
 	for i in SaveGame.hand.size():
@@ -69,31 +69,33 @@ func _ready() -> void:
 func on_ball_upgraded(ball_index:int):
 	if ball_index in range(balls_in_hand.size()):
 		balls_in_hand[ball_index].update_text_stats(SaveGame.hand[ball_index])
+		update_ball_stats(ball_index)
 		
 func ball_selected(ball_index:int):
 	set_camera($LaneCamera, true)
 	
-	# Swap whichever ball was previously spawned for the newly picked one -
-	# re-selecting a different ball before throwing is allowed.
-	var selected_ball: PlayerBall = SaveGame.hand[ball_index]
-	%Ball.ball_type = selected_ball.ball_type
-	%Ball.vel_scale_multiplier = selected_ball.ball_vel_scale
-	var bt := selected_ball.ball_type
+	update_ball_stats(ball_index)
 	
 	%BackButton.visible = true
 	
 	SaveGame.selected_hand_index = ball_index
+	%Ball.visible = true
 
+func update_ball_stats(ball_index:int):
+	var selected_ball: PlayerBall = SaveGame.hand[ball_index]
+	%Ball.ball_type = selected_ball.ball_type
+	%Ball.vel_scale_multiplier = selected_ball.ball_vel_scale
+	var bt := selected_ball.ball_type
 	var combined_scale:float = selected_ball.ball_scale * bt.scale_multiplier
-	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
+	var vecscale := Vector3(combined_scale,combined_scale,combined_scale)
+	%Ball/BallShape.scale = vecscale
+	%Ball/BallMesh.scale = vecscale
 	if %Ball.visual_instance:
-		%Ball.visual_instance.scale = Vector3.ONE * combined_scale
+		%Ball.visual_instance.scale = vecscale
 	var resting_radius:float = bt.approx_radius if bt.collision_shape else BASE_BALL_RADIUS
 	%Ball.position.y = base_lane_y + resting_radius * combined_scale
 	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
 
-	%Ball.visible = true
 
 func set_camera(camera:Camera3D, lerp_camera:bool):
 	if lerp_camera:
@@ -143,7 +145,8 @@ func _process(delta: float) -> void:
 		var headline := "YOU WIN!" if BowlingGame.final_result_win else "Game Over."
 		%ResultLabel.text = "%s Score: %d / %d" % [headline, BowlingGame.displayed_score, BowlingGame.TARGET_SCORE]
 
-	%Button.text = "New Game" if BowlingGame.game_over else "Skip"
+	%NewGameButton.visible = BowlingGame.game_over
+	%SkipButton.visible = !BowlingGame.game_over and %Ball.launched
 
 func _physics_process(delta: float) -> void:
 	if BowlingGame.game_over:
@@ -207,6 +210,7 @@ func _input(event):
 	if event.is_action_pressed("launch") and not %Ball.launched and SaveGame.selected_hand_index != -1 and not BowlingGame.game_over:
 		%Ball.launch(%PowerBar.value, %SpinBar.value)
 		SaveGame.throw_ball(SaveGame.selected_hand_index)
+		%BackButton.visible = false
 
 		%PowerBar.paused = true
 		get_tree().create_timer(10.0).timeout.connect(on_ball_timeout.bind())
@@ -219,13 +223,15 @@ func on_ball_timeout():
 	%Ball.set_freeze_enabled(true)
 
 func _on_button_pressed() -> void:
-	if BowlingGame.game_over:
-		BowlingGame.reset_game()
-		get_tree().change_scene_to_file("res://scenes/main.tscn")
-	else:
-		_end_current_ball()
+	_end_current_ball()
 
 
 func _on_back_button_pressed() -> void:
 	set_camera($BallReturnCamera, true)
 	%BackButton.visible = false
+
+
+func _on_new_game_button_pressed() -> void:
+	if BowlingGame.game_over:
+		BowlingGame.reset_game()
+		get_tree().change_scene_to_file("res://scenes/main.tscn")

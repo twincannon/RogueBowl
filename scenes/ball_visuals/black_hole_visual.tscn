@@ -1,54 +1,65 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://bu80pwa66c76l"]
+
+[ext_resource type="Texture2D" uid="uid://dtcu46ubdxpmo" path="res://assets/sprites/particle_fire.png" id="1_ni7ml"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bhmesh"]
 shading_mode = 0
 albedo_color = Color(0.03, 0.02, 0.05, 1)
-emission_enabled = true
-emission = Color(0.4, 0.15, 0.7, 1)
-emission_energy_multiplier = 0.6
 
 [sub_resource type="SphereMesh" id="SphereMesh_bhmesh"]
 material = SubResource("StandardMaterial3D_bhmesh")
 radius = 0.1
 height = 0.2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bhparticle"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(0.55, 0.25, 0.85, 1)
-emission_enabled = true
-emission = Color(0.5, 0.2, 0.8, 1)
-emission_energy_multiplier = 3.0
-billboard_mode = 1
+[sub_resource type="Curve" id="Curve_ni7ml"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.08429119, 1), 0.0, 0.0, 0, 0, Vector2(0.5019157, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 
-[sub_resource type="QuadMesh" id="QuadMesh_bhparticle"]
-material = SubResource("StandardMaterial3D_bhparticle")
-size = Vector2(0.02, 0.02)
+[sub_resource type="CurveTexture" id="CurveTexture_3gum7"]
+curve = SubResource("Curve_ni7ml")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bh"]
+emission_shape = 2
+emission_sphere_radius = 0.13
+angle_min = 1.0728835e-05
+angle_max = 180.00002
 direction = Vector3(0, 0, 0)
 spread = 180.0
 initial_velocity_min = 0.05
 initial_velocity_max = 0.15
-orbit_velocity_min = 0.3
-orbit_velocity_max = 0.6
+orbit_velocity_min = 0.3000001
+orbit_velocity_max = 1.0000001
+gravity = Vector3(0, 0, 0)
 radial_accel_min = -0.3
 radial_accel_max = -0.1
-gravity = Vector3(0, 0, 0)
-scale_min = 0.4
-scale_max = 0.9
+scale_min = 0.29999998
+scale_max = 1.1999999
+scale_curve = SubResource("CurveTexture_3gum7")
 color = Color(0.5, 0.2, 0.8, 1)
-emission_shape = 2
-emission_sphere_radius = 0.13
 
-[node name="BlackHoleVisual" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bhparticle"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.55, 0.25, 0.85, 1)
+albedo_texture = ExtResource("1_ni7ml")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[sub_resource type="QuadMesh" id="QuadMesh_bhparticle"]
+material = SubResource("StandardMaterial3D_bhparticle")
+size = Vector2(0.03, 0.03)
+
+[node name="BlackHoleVisual" type="Node3D" unique_id=585530512]
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=225421892]
 mesh = SubResource("SphereMesh_bhmesh")
 
-[node name="Swirl" type="GPUParticles3D" parent="."]
+[node name="Swirl" type="GPUParticles3D" parent="." unique_id=1092730053]
 amount = 24
 lifetime = 1.2
-emitting = true
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_bh")
 draw_pass_1 = SubResource("QuadMesh_bhparticle")
