@@ -1,4 +1,5 @@
 extends RigidBody3D
+class_name Ball
 
 @onready var arrow := $Arrow
 @onready var ball_shape: CollisionShape3D = $BallShape
@@ -8,8 +9,15 @@ extends RigidBody3D
 @export var ball_type: BallType = preload("res://resources/ball_types/default.tres")
 @export var vel_scale_multiplier: float = 1.0
 
+signal on_ball_selected
+
 var launched := false
 var spin_input := 0.0
+
+var is_active_ball:bool = true: #if this is our ball that is ready to be launched
+	set(is_active):
+		is_active_ball = is_active
+		$Arrow.visible = is_active
 
 func _ready() -> void:
 	contact_monitor = true
@@ -63,3 +71,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	var travel_dir := horizontal_vel.normalized()
 	var lateral_dir := travel_dir.cross(Vector3.UP)
 	state.apply_central_force(lateral_dir * spin_input * spin_grip_factor * ball_type.spin_grip_multiplier * mass)
+
+
+func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if !is_active_ball and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		on_ball_selected.emit()

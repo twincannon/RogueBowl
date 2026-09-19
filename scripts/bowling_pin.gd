@@ -7,10 +7,6 @@ var _freeze_eligible_at_msec := 0
 func _ready() -> void:
 	add_to_group("pins")
 
-## Suppress the stopped-moving freeze check for the next `seconds` - use this
-## after giving a pin a strong impulse (e.g. an explosion) so it doesn't get
-## frozen mid-flight the instant its velocity passes through zero (which
-## happens for real, not just as a stale reading, at the apex of a toss).
 func delay_freeze(seconds: float) -> void:
 	_freeze_eligible_at_msec = max(_freeze_eligible_at_msec, Time.get_ticks_msec() + int(seconds * 1000.0))
 
