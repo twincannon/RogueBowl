@@ -19,8 +19,10 @@ func _on_button_pressed() -> void:
 		match $Button.text:
 			"Ball Size":
 				SaveGame.hand[SaveGame.selected_hand_index].ball_scale += 0.25
+				SaveGame.ball_upgraded.emit(SaveGame.selected_hand_index)
 			"Ball Speed":
 				SaveGame.hand[SaveGame.selected_hand_index].ball_vel_scale += 0.25
+				SaveGame.ball_upgraded.emit(SaveGame.selected_hand_index)
 			"Pin Count":
 				SaveGame.pin_rows += 1
 

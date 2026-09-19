@@ -41,6 +41,14 @@ var is_active_ball:bool = true: #if this is our ball that is ready to be launche
 	set(is_active):
 		is_active_ball = is_active
 		$Arrow.visible = is_active
+		$SpeedLabel.visible = !is_active
+		$SizeLabel.visible = !is_active
+		$NameLabel.visible = !is_active
+
+func update_text_stats(ball:PlayerBall):
+	$SpeedLabel.text = "Speed: " + str(ball.ball_vel_scale) + "x"
+	$SizeLabel.text = "Size: " + str(ball.ball_scale) + "x"
+	$NameLabel.text = ball.ball_type.display_name
 
 func _ready() -> void:
 	contact_monitor = true

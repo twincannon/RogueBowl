@@ -5,6 +5,7 @@ var bowling_pin_scene = preload("res://scenes/bowling_pin.tscn")
 var tnt_pin_scene = preload("res://scenes/tnt_pin.tscn")
 var fireworks_pin_scene = preload("res://scenes/fireworks_pin.tscn")
 var pins:Array[BowlingPin]
+var balls_in_hand:Array[Ball]
 
 const BASE_BALL_RADIUS := 0.1
 const BASE_BALL_MASS := 7.26
@@ -15,15 +16,24 @@ var _throw_recorded := false
 
 func _ready() -> void:
 	
+	SaveGame.ball_upgraded.connect(on_ball_upgraded)
+	
 	set_camera($BallReturnCamera, true)
+	
+	# Show balls in ball return (players hand)
 	for i in SaveGame.hand.size():
 		var current_ball = SaveGame.hand[i] as PlayerBall
 		if is_instance_valid(current_ball):
 			var new_scene = ball_scene.instantiate() as Ball
-			new_scene.position.x =  i * 0.25
+			new_scene.position.x =  i * 0.4
 			new_scene.is_active_ball = false
 			new_scene.ball_type = current_ball.ball_type
 			new_scene.on_ball_selected.connect(ball_selected.bind(i))
+			balls_in_hand.append(new_scene)
+			
+			var ball: PlayerBall = SaveGame.hand[i]
+			new_scene.update_text_stats(ball)
+			
 			$BallReturnRoot.add_child(new_scene)
 		
 
@@ -39,7 +49,6 @@ func _ready() -> void:
 	# slot buttons - already connected from their own earlier _ready(),
 	# since children ready before their parent - actually hear about it and
 	# re-enable themselves instead of staying stuck disabled.
-	SaveGame.ball_selected.connect(_on_ball_selected)
 	SaveGame.select_ball(-1)
 
 	if BowlingGame.needs_fresh_rack():
@@ -57,6 +66,10 @@ func _ready() -> void:
 		pins.append(new_pin)
 		pin_rack_indices.append(i)
 		
+func on_ball_upgraded(ball_index:int):
+	if ball_index in range(balls_in_hand.size()):
+		balls_in_hand[ball_index].update_text_stats(SaveGame.hand[ball_index])
+		
 func ball_selected(ball_index:int):
 	set_camera($LaneCamera, true)
 	
@@ -66,6 +79,8 @@ func ball_selected(ball_index:int):
 	%Ball.ball_type = selected_ball.ball_type
 	%Ball.vel_scale_multiplier = selected_ball.ball_vel_scale
 	var bt := selected_ball.ball_type
+	
+	%BackButton.visible = true
 	
 	SaveGame.selected_hand_index = ball_index
 
@@ -90,32 +105,6 @@ func set_camera(camera:Camera3D, lerp_camera:bool):
 		$GameCamera.position = camera.position
 		$GameCamera.rotation = camera.rotation
 		$GameCamera.fov = camera.fov
-
-func _on_ball_selected(hand_index: int) -> void:
-	if %Ball.launched:
-		return
-
-	if hand_index < 0:
-		%Ball.visible = false
-		return
-
-	# Swap whichever ball was previously spawned for the newly picked one -
-	# re-selecting a different ball before throwing is allowed.
-	var selected_ball: PlayerBall = SaveGame.hand[hand_index]
-	%Ball.ball_type = selected_ball.ball_type
-	%Ball.vel_scale_multiplier = selected_ball.ball_vel_scale
-	var bt := selected_ball.ball_type
-
-	var combined_scale:float = selected_ball.ball_scale * bt.scale_multiplier
-	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	if %Ball.visual_instance:
-		%Ball.visual_instance.scale = Vector3.ONE * combined_scale
-	var resting_radius:float = bt.approx_radius if bt.collision_shape else BASE_BALL_RADIUS
-	%Ball.position.y = base_lane_y + resting_radius * combined_scale
-	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
-
-	%Ball.visible = true
 
 func _instantiate_pin(type: BowlingGame.PinType) -> BowlingPin:
 	match type:
@@ -239,3 +228,4 @@ func _on_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	set_camera($BallReturnCamera, true)
+	%BackButton.visible = false

@@ -19,6 +19,8 @@ const BALL_TYPE_RESOURCES := {
 # until the draw pile runs dry and gets reshuffled.
 signal ball_selected(hand_index: int)
 
+signal ball_upgraded(hand_index:int)
+
 var hand: Array[PlayerBall] = []
 var draw_pile: Array[PlayerBall] = []
 var discard_pile: Array[PlayerBall] = []

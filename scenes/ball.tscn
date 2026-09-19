@@ -40,4 +40,25 @@ cast_shadow = 0
 mesh = SubResource("CylinderMesh_f4vxy")
 surface_material_override/0 = SubResource("StandardMaterial3D_tbgi4")
 
+[node name="SpeedLabel" type="Label3D" parent="." unique_id=627801177]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24021596, 0)
+visible = false
+text = "Speed"
+font_size = 12
+outline_size = 6
+
+[node name="SizeLabel" type="Label3D" parent="." unique_id=507670791]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16538489, 0)
+visible = false
+text = "Size"
+font_size = 12
+outline_size = 6
+
+[node name="NameLabel" type="Label3D" parent="." unique_id=1562181441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30623078, 0)
+visible = false
+text = "Name"
+font_size = 12
+outline_size = 6
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]

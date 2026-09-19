@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://07mgft05yrlj" path="res://scenes/alley.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://xbgjfi7jj0et" path="res://scenes/ui/upgrade_button.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://qxo56ivmnc0w" path="res://scenes/ball.tscn" id="4_tefeu"]
-[ext_resource type="Script" uid="uid://djwsheoylp7ya" path="res://scripts/ui/ball_slot_button.gd" id="5_ballslot"]
 [ext_resource type="PackedScene" path="res://scenes/ui/add_ball_button.tscn" id="6_addball"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
@@ -177,27 +176,6 @@ offset_top = 108.0
 offset_right = 157.0
 offset_bottom = 468.0
 
-[node name="BallReturnLabel" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551001]
-layout_mode = 2
-text = "Ball Return"
-
-[node name="BallSlot0" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551002]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("5_ballslot")
-
-[node name="BallSlot1" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551003]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("5_ballslot")
-slot_index = 1
-
-[node name="BallSlot2" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=5551004]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("5_ballslot")
-slot_index = 2
-
 [node name="Label" type="Label" parent="CanvasLayer/Control/UpgradeContainer" unique_id=1579360550]
 layout_mode = 2
 text = "Upgrade - Pin Cost"
@@ -232,6 +210,8 @@ ball_type_id = 2
 cost = 20
 
 [node name="BackButton" type="Button" parent="CanvasLayer/Control/UpgradeContainer" unique_id=882243432]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Back"
 
