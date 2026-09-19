@@ -6,13 +6,36 @@ class_name Ball
 
 @export var spin_grip_factor: float = 0.5  # lateral curve accel (m/s^2 per unit of spin), independent of ball speed
 @export var visual_spin_scale: float = 0.5  # cosmetic english on top of the real rolling spin
-@export var ball_type: BallType = preload("res://resources/ball_types/default.tres")
 @export var vel_scale_multiplier: float = 1.0
+
+@export var ball_type: BallType = preload("res://resources/ball_types/default.tres"):
+	set(new_type):
+		ball_type = new_type
+		_update_visual()
+		_update_collision_shape()
 
 signal on_ball_selected
 
 var launched := false
 var spin_input := 0.0
+var visual_instance: Node3D = null  # the current type's custom visual, if any - read by main.gd to scale it with upgrades
+var _default_collision_shape: Shape3D  # captured lazily, from whatever $BallShape.shape was before any override
+
+func _update_visual() -> void:
+	if visual_instance:
+		visual_instance.queue_free()
+		visual_instance = null
+	if ball_type and ball_type.visual_scene:
+		visual_instance = ball_type.visual_scene.instantiate()
+		add_child(visual_instance)
+		$BallMesh.visible = false   # the custom visual replaces the plain sphere...
+	else:
+		$BallMesh.visible = true    # ...falls back to it when a type has no visual_scene (e.g. Default)
+
+func _update_collision_shape() -> void:
+	if _default_collision_shape == null:
+		_default_collision_shape = $BallShape.shape  # capture the original sphere, once, before any override
+	$BallShape.shape = ball_type.collision_shape if (ball_type and ball_type.collision_shape) else _default_collision_shape
 
 var is_active_ball:bool = true: #if this is our ball that is ready to be launched
 	set(is_active):
@@ -47,8 +70,15 @@ func launch(power:float, spin:float):
 	set_axis_velocity(world_vel)
 
 	# Real no-slip rolling angular velocity (axis perpendicular to travel
-	# direction) so the ball rolls down the lane instead of sliding.
-	var radius:float = (ball_shape.shape as SphereShape3D).radius * ball_shape.scale.x
+	# direction) so the ball rolls down the lane instead of sliding. A type
+	# with a custom collision_shape (e.g. an icosahedron) isn't a true roller,
+	# so it uses an authored approximate radius instead of deriving an exact
+	# one - this only needs to give it a reasonable initial spin at launch.
+	var radius:float
+	if ball_type.collision_shape:
+		radius = ball_type.approx_radius * ball_shape.scale.x
+	else:
+		radius = (ball_shape.shape as SphereShape3D).radius * ball_shape.scale.x
 	var roll_velocity := world_vel.cross(Vector3.UP) / radius
 
 	# Small amount of visible "english" around the vertical axis - the

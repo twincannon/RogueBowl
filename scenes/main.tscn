@@ -256,7 +256,7 @@ offset_left = 27.0
 offset_top = 23.0
 offset_right = 100.0
 offset_bottom = 73.0
-text = "Reset"
+text = "Skip"
 
 [node name="PinsLabel" type="Label" parent="CanvasLayer" unique_id=379954495]
 unique_name_in_owner = true

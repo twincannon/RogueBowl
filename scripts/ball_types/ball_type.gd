@@ -18,6 +18,14 @@ class_name BallType
 @export var spin_grip_multiplier: float = 1.0
 @export var visual_spin_multiplier: float = 1.0
 
+@export var visual_scene: PackedScene = null  # optional - null means "use the plain default sphere mesh"
+@export var collision_shape: Shape3D = null   # optional - null means "use the default sphere collision"
+## Only used when collision_shape is set - Shape3D has no universal "radius", so a
+## non-sphere shape (e.g. an icosahedron) needs an authored approximation, used only
+## to give the ball a reasonable initial spin at launch and a roughly-correct spawn
+## height. Doesn't need to be exact - physics settles the rest.
+@export var approx_radius: float = 0.1
+
 ## Called once when the ball is launched.
 func on_launch(_ball: RigidBody3D) -> void:
 	pass

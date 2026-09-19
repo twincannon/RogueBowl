@@ -22,6 +22,7 @@ func _ready() -> void:
 			var new_scene = ball_scene.instantiate() as Ball
 			new_scene.position.x =  i * 0.25
 			new_scene.is_active_ball = false
+			new_scene.ball_type = current_ball.ball_type
 			new_scene.on_ball_selected.connect(ball_selected.bind(i))
 			$BallReturnRoot.add_child(new_scene)
 		
@@ -71,7 +72,10 @@ func ball_selected(ball_index:int):
 	var combined_scale:float = selected_ball.ball_scale * bt.scale_multiplier
 	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
 	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	%Ball.position.y = base_lane_y + BASE_BALL_RADIUS * combined_scale
+	if %Ball.visual_instance:
+		%Ball.visual_instance.scale = Vector3.ONE * combined_scale
+	var resting_radius:float = bt.approx_radius if bt.collision_shape else BASE_BALL_RADIUS
+	%Ball.position.y = base_lane_y + resting_radius * combined_scale
 	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
 
 	%Ball.visible = true
@@ -105,7 +109,10 @@ func _on_ball_selected(hand_index: int) -> void:
 	var combined_scale:float = selected_ball.ball_scale * bt.scale_multiplier
 	%Ball/BallShape.scale = Vector3(combined_scale,combined_scale,combined_scale)
 	%Ball/BallMesh.scale = Vector3(combined_scale,combined_scale,combined_scale)
-	%Ball.position.y = base_lane_y + BASE_BALL_RADIUS * combined_scale
+	if %Ball.visual_instance:
+		%Ball.visual_instance.scale = Vector3.ONE * combined_scale
+	var resting_radius:float = bt.approx_radius if bt.collision_shape else BASE_BALL_RADIUS
+	%Ball.position.y = base_lane_y + resting_radius * combined_scale
 	%Ball.set_mass(BASE_BALL_MASS * pow(combined_scale, 3.0) * bt.mass_multiplier)
 
 	%Ball.visible = true
@@ -147,7 +154,7 @@ func _process(delta: float) -> void:
 		var headline := "YOU WIN!" if BowlingGame.final_result_win else "Game Over."
 		%ResultLabel.text = "%s Score: %d / %d" % [headline, BowlingGame.displayed_score, BowlingGame.TARGET_SCORE]
 
-	%Button.text = "New Game" if BowlingGame.game_over else "Reset"
+	%Button.text = "New Game" if BowlingGame.game_over else "Skip"
 
 func _physics_process(delta: float) -> void:
 	if BowlingGame.game_over:
@@ -186,10 +193,13 @@ func _physics_process(delta: float) -> void:
 				any_pin_moving = true
 				break
 	if %Ball.launched and !any_pin_moving and %Ball.is_freeze_enabled():
-		if not _throw_recorded:
-			_throw_recorded = true
-			_record_throw_result()
-		get_tree().change_scene_to_file("res://scenes/main.tscn")
+		_end_current_ball()
+
+func _end_current_ball():
+	if not _throw_recorded:
+		_throw_recorded = true
+		_record_throw_result()
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _record_throw_result() -> void:
 	var pins_down := 0
@@ -222,7 +232,9 @@ func on_ball_timeout():
 func _on_button_pressed() -> void:
 	if BowlingGame.game_over:
 		BowlingGame.reset_game()
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+		get_tree().change_scene_to_file("res://scenes/main.tscn")
+	else:
+		_end_current_ball()
 
 
 func _on_back_button_pressed() -> void:

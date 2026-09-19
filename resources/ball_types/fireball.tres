@@ -1,13 +1,11 @@
-[gd_resource type="Resource" script_class="FireballType" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="FireballType" format=3 uid="uid://dseacnjnfjbw1"]
 
-[ext_resource type="Script" path="res://scripts/ball_types/fireball_type.gd" id="1_fireball"]
+[ext_resource type="Script" uid="uid://c86u5ia3yrbkn" path="res://scripts/ball_types/fireball_type.gd" id="1_fireball"]
+[ext_resource type="PackedScene" path="res://scenes/effects/fire_trail_puff.tscn" id="2_aumai"]
+[ext_resource type="PackedScene" path="res://scenes/ball_visuals/fireball_visual.tscn" id="2_visual"]
 
 [resource]
 script = ExtResource("1_fireball")
 display_name = "Fireball"
-mass_multiplier = 1.0
-scale_multiplier = 1.0
-velocity_multiplier = 1.0
 spin_grip_multiplier = 0.8
-visual_spin_multiplier = 1.0
-trail_interval = 0.08
+visual_scene = ExtResource("2_visual")
