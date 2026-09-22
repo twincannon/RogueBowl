@@ -21,11 +21,12 @@ func _ready() -> void:
 	set_camera($BallReturnCamera, false)
 	
 	# Show balls in ball return (players hand)
+	const BALL_RETURN_SPACING := 0.25
 	for i in SaveGame.hand.size():
 		var current_ball = SaveGame.hand[i] as PlayerBall
 		if is_instance_valid(current_ball):
 			var new_scene = ball_scene.instantiate() as Ball
-			new_scene.position.x =  i * 0.4
+			new_scene.position.x = i * BALL_RETURN_SPACING
 			new_scene.is_active_ball = false
 			new_scene.ball_type = current_ball.ball_type
 			new_scene.on_ball_selected.connect(ball_selected.bind(i))
@@ -116,7 +117,7 @@ func _instantiate_pin(type: BowlingGame.PinType) -> BowlingPin:
 
 func generate_bowling_pin_positions(pin_spacing: float, row_count: int) -> Array[Vector2]:
 	var positions:Array[Vector2] = []
-
+	
 	# Equilateral triangle layout (4 rows, 10 pins total)
 	for row in range(row_count):
 		var pins_in_row := row + 1

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dg2f7xwwelr8y" path="res://scripts/power_bar.gd" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://cc4csmm2nkshq" path="res://icon.svg" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://07mgft05yrlj" path="res://scenes/alley.tscn" id="2_tefeu"]
+[ext_resource type="PackedScene" uid="uid://cmbdomix5itpa" path="res://assets/ballreturn.glb" id="2_tipki"]
 [ext_resource type="PackedScene" uid="uid://xbgjfi7jj0et" path="res://scenes/ui/upgrade_button.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://qxo56ivmnc0w" path="res://scenes/ball.tscn" id="4_tefeu"]
 [ext_resource type="PackedScene" path="res://scenes/ui/add_ball_button.tscn" id="6_addball"]
@@ -44,8 +45,11 @@ fov = 40.0
 transform = Transform3D(0.97958195, 0.017522264, -0.20028034, -2.1886746e-09, 0.9961947, 0.08715572, 0.20104542, -0.08537617, 0.97585434, -18.947403, 0.724, 0)
 fov = 90.0
 
+[node name="ballreturn" parent="." unique_id=1347763136 instance=ExtResource("2_tipki")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -18, -0.11618869, -1)
+
 [node name="BallReturnRoot" type="Node3D" parent="." unique_id=1968444495]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.99867, 0.34156227, -0.9821004)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.097702, 0.27611047, -0.9821004)
 
 [node name="DebugCamera" type="Camera3D" parent="." unique_id=75049150]
 transform = Transform3D(-3.5050174e-08, 0.66513175, -0.74672604, 2.6118396e-08, 0.74672604, 0.66513175, 1, 3.8096983e-09, -4.3545054e-08, -3.0873623, 1.9793155, 0)

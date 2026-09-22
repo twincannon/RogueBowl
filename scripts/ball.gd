@@ -4,7 +4,7 @@ class_name Ball
 @onready var arrow := $Arrow
 @onready var ball_shape: CollisionShape3D = $BallShape
 
-@export var spin_grip_factor: float = 0.5  # lateral curve accel (m/s^2 per unit of spin), independent of ball speed
+@export var spin_grip_factor: float = 0.2  # lateral curve accel (m/s^2 per unit of spin), independent of ball speed
 @export var visual_spin_scale: float = 0.5  # cosmetic english on top of the real rolling spin
 @export var vel_scale_multiplier: float = 1.0
 
