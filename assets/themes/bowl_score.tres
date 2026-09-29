@@ -1,0 +1,9 @@
+[gd_resource type="Theme" format=3 uid="uid://71h4vpva62o8"]
+
+[ext_resource type="Texture2D" uid="uid://ou6vl01sf28e" path="res://assets/themes/bowl_score_frame.png" id="1_bm02c"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8031x"]
+texture = ExtResource("1_bm02c")
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_8031x")

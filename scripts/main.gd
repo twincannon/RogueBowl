@@ -20,6 +20,8 @@ func _ready() -> void:
 	
 	set_camera($BallReturnCamera, false)
 	
+	setup_scoreboard()
+	
 	# Show balls in ball return (players hand)
 	const BALL_RETURN_SPACING := 0.25
 	for i in SaveGame.hand.size():
@@ -66,7 +68,10 @@ func _ready() -> void:
 		new_pin.global_position.y = $BowlingPinRoot.position.y
 		pins.append(new_pin)
 		pin_rack_indices.append(i)
-		
+
+func setup_scoreboard():
+	%ScoreContainer.update_scores()
+	
 func on_ball_upgraded(ball_index:int):
 	if ball_index in range(balls_in_hand.size()):
 		balls_in_hand[ball_index].update_text_stats(SaveGame.hand[ball_index])
@@ -139,7 +144,7 @@ func _process(delta: float) -> void:
 	%ScoreLabel.text = "Score: %d / %d" % [BowlingGame.displayed_score, BowlingGame.TARGET_SCORE]
 
 	%FrameLabel.visible = not BowlingGame.game_over
-	%FrameLabel.text = "Frame %d, Ball %d" % [BowlingGame.current_frame, BowlingGame.current_ball_in_frame]
+	%FrameLabel.text = "Frame %d, Ball %d" % [BowlingGame.current_frame + 1, BowlingGame.current_ball + 1]
 
 	%ResultLabel.visible = BowlingGame.game_over
 	if BowlingGame.game_over:

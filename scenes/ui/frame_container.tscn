@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://qjts1oucadhf"]
+
+[ext_resource type="Theme" uid="uid://71h4vpva62o8" path="res://assets/themes/bowl_score.tres" id="1_c5dn5"]
+[ext_resource type="Script" uid="uid://exsebxphiod3" path="res://scripts/ui/frame_container.gd" id="2_5g2e8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bm02c"]
+font_size = 14
+
+[node name="FrameContainer" type="PanelContainer" unique_id=117202103]
+custom_minimum_size = Vector2(40, 40)
+theme = ExtResource("1_c5dn5")
+script = ExtResource("2_5g2e8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2093153968]
+layout_mode = 2
+alignment = 2
+
+[node name="FrameFirstHalfScore" type="Label" parent="HBoxContainer" unique_id=788462374]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=435230180]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer" unique_id=1535189566]
+layout_mode = 2
+
+[node name="FrameSecondHalfScore" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer" unique_id=2061785951]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_bm02c")
+horizontal_alignment = 1
