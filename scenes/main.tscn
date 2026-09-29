@@ -238,12 +238,36 @@ Spacebar to launch"
 [node name="ScoreContainer" type="HBoxContainer" parent="CanvasLayer/Control" unique_id=46341637]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 293.0
-offset_top = 68.0
-offset_right = 373.0
-offset_bottom = 108.0
+offset_left = 211.0
+offset_top = 128.0
+offset_right = 291.0
+offset_bottom = 168.0
 theme_override_constants/separation = 0
 script = ExtResource("9_85g3d")
+
+[node name="DrawContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=981958288]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 925.0
+offset_top = 160.0
+offset_right = 971.0
+offset_bottom = 235.0
+
+[node name="DrawLabel" type="Label" parent="CanvasLayer/Control/DrawContainer" unique_id=1674506279]
+layout_mode = 2
+text = "Draw:"
+
+[node name="DiscardContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=1626054127]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 160.0
+offset_right = 1095.0
+offset_bottom = 235.0
+
+[node name="DiscardLabel" type="Label" parent="CanvasLayer/Control/DiscardContainer" unique_id=834545908]
+layout_mode = 2
+text = "Discard:"
 
 [node name="SkipButton" type="Button" parent="CanvasLayer" unique_id=1147933242]
 unique_name_in_owner = true

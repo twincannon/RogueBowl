@@ -22,6 +22,18 @@ func _ready() -> void:
 	
 	setup_scoreboard()
 	
+
+	for i in SaveGame.draw_pile:
+		var label = Label.new()
+		label.text = i.ball_type.display_name
+		%DrawContainer.add_child(label)
+		
+	for i in SaveGame.discard_pile:
+		var label = Label.new()
+		label.text = i.ball_type.display_name
+		%DiscardContainer.add_child(label)
+	
+	
 	# Show balls in ball return (players hand)
 	const BALL_RETURN_SPACING := 0.25
 	for i in SaveGame.hand.size():
